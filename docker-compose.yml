@@ -1,0 +1,15 @@
+version: '3.8'
+
+services:
+  app:
+    build:
+      dockerfile: ./docker/app/Dockerfile
+      context: .
+    command: python ./server.py
+    volumes:
+      - .:/app
+    ports:
+      - ${APP_PORT:-5000}:5000
+    container_name: app_service
+    env_file:
+      - .env
