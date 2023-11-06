@@ -19,20 +19,20 @@ def main():
         full_contents = "<h1 style='text-align: center'>Bắt Đầu Đánh Dấu Hoang Cổ Thánh Thể. ( Bản dịch. )</h1>"
         file_path = f"chap.pdf"
         # file_path = f"{tmpdir}/Crawler.pdf"
-        for i in range(1, 200):
+        # From chapter 1 -> 200
+        for i in range(1, 201):
             url = f"https://truyenyy.pro/truyen/bat-dau-danh-dau-hoang-co-thanh-the-ban-dich/chuong-{i}.html"
             try:
                 contents, header = get_content(url)
             except:
                 print("Error or page not exit")
                 continue
-            options = {
-                'encoding': "UTF-8",
-            }
-            if contents is not None:
-                full_contents += header + contents + "<br>"
+            if contents != "None":
+                full_contents += f"<h4>Chap {i}</h4>" + header + contents + "<br>"
+        options = {
+            'encoding': "UTF-8",
+        }
         pdfkit.from_string(full_contents, file_path, options=options)
-        
 
 if __name__ == "__main__":
     main()
