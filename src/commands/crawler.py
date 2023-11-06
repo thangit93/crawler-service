@@ -2,6 +2,7 @@ import pdfkit
 import requests
 import tempfile
 from bs4 import BeautifulSoup
+from pypdf import PdfMerger
 
 def get_content(url):
     jar = requests.cookies.RequestsCookieJar()
@@ -14,11 +15,18 @@ def get_content(url):
 def main():
     # Test
     # https://truyenyy.pro/truyen/bat-dau-danh-dau-hoang-co-thanh-the-ban-dich/chuong-1.html
-    url = "https://truyenyy.pro/truyen/bat-dau-danh-dau-hoang-co-thanh-the-ban-dich/chuong-1.html"
-    contents = get_content(url)
     with tempfile.TemporaryDirectory() as tmpdir:
-        file_path = f"{tmpdir}/out.pdf"
-        pdfkit.from_string(contents, file_path)
+        merger = PdfMerger()
+        for i in range(1, 50):
+            url = f"https://truyenyy.pro/truyen/bat-dau-danh-dau-hoang-co-thanh-the-ban-dich/chuong-{i}.html"
+            contents = get_content(url)
+            file_path = f"{tmpdir}/chap_{i}.pdf"
+            # TODO: Error format
+            pdfkit.from_string(contents, file_path)
+            merger.append(file_path)
+        merger.write("result.pdf")
+        merger.close()
+        
 
 
 if __name__ == "__main__":
